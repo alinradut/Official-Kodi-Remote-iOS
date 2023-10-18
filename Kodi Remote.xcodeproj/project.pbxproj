@@ -88,6 +88,9 @@
 		0FEE08161704819A00EC9BC7 /* FloatingHeaderFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEE08151704819A00EC9BC7 /* FloatingHeaderFlowLayout.m */; };
 		1A6742E9168479FD00E8D5AF /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A6742E8168479FC00E8D5AF /* MasterViewController.xib */; };
 		1A9786C01683D87800B4F3F8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A9786C21683D87800B4F3F8 /* Localizable.strings */; };
+		3B75E88A2ADADFCE006AC54E /* SystemRemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */; };
+		3B75E88D2ADBCE95006AC54E /* NowPlayingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */; };
+		3B75E88F2ADF1314006AC54E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B75E88E2ADF1314006AC54E /* MediaPlayer.framework */; };
 		C703692927148CEF0049F9BF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C703692827148CEF0049F9BF /* StoreKit.framework */; };
 		C718444625FFD06400F5A060 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C718444525FFD06300F5A060 /* SafariServices.framework */; };
 		C7478BF9257258E700161C1E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7478BF8257258E700161C1E /* Launch Screen.storyboard */; };
@@ -268,6 +271,11 @@
 		1A9786AF1683CEEA00B4F3F8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A9786C11683D87800B4F3F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1A9786C31683D8E900B4F3F8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3B75E8882ADADFCE006AC54E /* SystemRemoteController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemRemoteController.h; sourceTree = "<group>"; };
+		3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemRemoteController.m; sourceTree = "<group>"; };
+		3B75E88B2ADBCE95006AC54E /* NowPlayingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NowPlayingManager.h; sourceTree = "<group>"; };
+		3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NowPlayingManager.m; sourceTree = "<group>"; };
+		3B75E88E2ADF1314006AC54E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		8ED18E7A16B572D700CA03F4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8ED18E7B16B572D700CA03F4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1FF37DE1709D1EB005473FF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -334,6 +342,7 @@
 				0F49885D152879FF0041DA92 /* QuartzCore.framework in Frameworks */,
 				0F74773A151E094C00EF78AD /* AudioToolbox.framework in Frameworks */,
 				0F5548FB151D1187007E633F /* UIKit.framework in Frameworks */,
+				3B75E88F2ADF1314006AC54E /* MediaPlayer.framework in Frameworks */,
 				0F5548FD151D1187007E633F /* Foundation.framework in Frameworks */,
 				C718444625FFD06400F5A060 /* SafariServices.framework in Frameworks */,
 				0F5548FF151D1187007E633F /* CoreGraphics.framework in Frameworks */,
@@ -514,6 +523,7 @@
 		0F5548F9151D1187007E633F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B75E88E2ADF1314006AC54E /* MediaPlayer.framework */,
 				C703692827148CEF0049F9BF /* StoreKit.framework */,
 				C718444525FFD06300F5A060 /* SafariServices.framework */,
 				0F32092F16FE193400636BA2 /* ImageIO.framework */,
@@ -553,6 +563,10 @@
 				0F4019B218F415A50064E4DC /* MessagesView.m */,
 				0F4AB8181903DDCE005DEC5C /* RemoteControllerGestureZoneView.h */,
 				0F4AB8191903DDCE005DEC5C /* RemoteControllerGestureZoneView.m */,
+				3B75E8882ADADFCE006AC54E /* SystemRemoteController.h */,
+				3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */,
+				3B75E88B2ADBCE95006AC54E /* NowPlayingManager.h */,
+				3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */,
 				0F747736151DD98600EF78AD /* classes */,
 				0F554901151D1187007E633F /* Supporting Files */,
 				0F554C21151D197F007E633F /* nib */,
@@ -821,6 +835,7 @@
 				0F55490B151D1187007E633F /* AppDelegate.m in Sources */,
 				0F55490E151D1187007E633F /* MasterViewController.m in Sources */,
 				C76451D129C51221000AE949 /* NSData+ImageContentType.m in Sources */,
+				3B75E88D2ADBCE95006AC54E /* NowPlayingManager.m in Sources */,
 				0F554911151D1187007E633F /* DetailViewController.m in Sources */,
 				0F554C20151D14DA007E633F /* mainMenu.m in Sources */,
 				0F74772E151DD77400EF78AD /* NowPlaying.m in Sources */,
@@ -856,6 +871,7 @@
 				0F7F3DA5164A6D730080A14A /* ECSlidingViewController.m in Sources */,
 				0F7F3DA6164A6D730080A14A /* UIImage+ImageWithUIView.m in Sources */,
 				0F7F3DAB164AAD0F0080A14A /* InitialSlidingViewController.m in Sources */,
+				3B75E88A2ADADFCE006AC54E /* SystemRemoteController.m in Sources */,
 				0F40F5A7164D5FA000AF9DE9 /* RightMenuViewController.m in Sources */,
 				0FA39CBD165419F400A61E4A /* gradientUIView.m in Sources */,
 				0FB133AA165EC1E5003756C1 /* tcpJSONRPC.m in Sources */,

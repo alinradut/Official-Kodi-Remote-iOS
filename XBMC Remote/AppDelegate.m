@@ -14,6 +14,8 @@
 #import "InitialSlidingViewController.h"
 #import "UIImageView+WebCache.h"
 #import "Utilities.h"
+#import "NowPlayingManager.h"
+#import "SystemRemoteController.h"
 
 #include <arpa/inet.h>
 #include <net/if.h>
@@ -6259,6 +6261,10 @@
         self.windowController.mainMenu = mainMenuItems;
         self.window.rootViewController = self.windowController;
     }
+    
+    [[NowPlayingManager sharedManager] register];
+    [[SystemRemoteController sharedManager] setup];
+    
     return YES;
 }
 

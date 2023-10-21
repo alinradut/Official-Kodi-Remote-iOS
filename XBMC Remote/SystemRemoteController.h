@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL isEnabled;
 
++ (id)sharedManager;
+- (void)setup;
+
 @end
 
 NS_ASSUME_NONNULL_END

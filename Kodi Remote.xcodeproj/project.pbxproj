@@ -88,6 +88,7 @@
 		0FEE08161704819A00EC9BC7 /* FloatingHeaderFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEE08151704819A00EC9BC7 /* FloatingHeaderFlowLayout.m */; };
 		1A6742E9168479FD00E8D5AF /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A6742E8168479FC00E8D5AF /* MasterViewController.xib */; };
 		1A9786C01683D87800B4F3F8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A9786C21683D87800B4F3F8 /* Localizable.strings */; };
+		3B42B34F2AE46A79000ED51F /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B42B34E2AE46A78000ED51F /* silence.mp3 */; };
 		3B75E88A2ADADFCE006AC54E /* SystemRemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */; };
 		3B75E88D2ADBCE95006AC54E /* NowPlayingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */; };
 		3B75E88F2ADF1314006AC54E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B75E88E2ADF1314006AC54E /* MediaPlayer.framework */; };
@@ -271,6 +272,7 @@
 		1A9786AF1683CEEA00B4F3F8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A9786C11683D87800B4F3F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1A9786C31683D8E900B4F3F8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3B42B34E2AE46A78000ED51F /* silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = silence.mp3; sourceTree = "<group>"; };
 		3B75E8882ADADFCE006AC54E /* SystemRemoteController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemRemoteController.h; sourceTree = "<group>"; };
 		3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemRemoteController.m; sourceTree = "<group>"; };
 		3B75E88B2ADBCE95006AC54E /* NowPlayingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NowPlayingManager.h; sourceTree = "<group>"; };
@@ -712,6 +714,7 @@
 			isa = PBXGroup;
 			children = (
 				0FB8598215FF9DCF0070F324 /* sign.mp3 */,
+				3B42B34E2AE46A78000ED51F /* silence.mp3 */,
 			);
 			name = audio;
 			sourceTree = "<group>";
@@ -809,6 +812,7 @@
 				0F487B5A15399716004530C1 /* serverListCellView.xib in Resources */,
 				0F175F25154D5C3600C1C61F /* ViewControllerIPad.xib in Resources */,
 				0F1F67F61563A7C0005FA170 /* DejaVuSans-Bold-Caps.ttf in Resources */,
+				3B42B34F2AE46A79000ED51F /* silence.mp3 in Resources */,
 				0F6234E8192808120024FEFA /* cellView.xib in Resources */,
 				0F6234EE19280D9B0024FEFA /* DetailViewController.xib in Resources */,
 				0F6234F0192811150024FEFA /* NowPlaying.xib in Resources */,

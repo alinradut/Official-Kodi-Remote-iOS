@@ -7,56 +7,11 @@
 //
 
 #import "NowPlayingManager.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import "SDImageCache.h"
 #import "Utilities.h"
 #import "AppDelegate.h"
 #define ID_INVALID -2
 
-typedef enum : NSUInteger {
-    RepeatTypeOff,
-    RepeatTypeOne,
-    RepeatTypeAll,
-} RepeatType;
-
-@interface NowPlayingItem : NSObject
-
-@property (nonatomic) int playerID;
-@property (nonatomic) long id;
-
-@property (nonatomic, strong) NSString *album;
-@property (nonatomic, strong) NSString *artist;
-@property (nonatomic, strong) NSString *label;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *thumbnailPath;
-@property (nonatomic, strong) NSString *thumbnailURL;
-@property (nonatomic, strong) NSString *track;
-@property (nonatomic, strong) NSString *studio;
-@property (nonatomic, strong) NSString *showTitle;
-@property (nonatomic, strong) NSString *episode;
-@property (nonatomic, strong) NSString *season;
-@property (nonatomic, strong) NSString *fanart;
-@property (nonatomic, strong) NSString *channel;
-@property (nonatomic, strong) NSString *description_;
-@property (nonatomic, strong) NSString *year;
-@property (nonatomic, strong) NSString *director;
-@property (nonatomic, strong) NSString *plot;
-
-@property (nonatomic, strong) NSString *type;
-
-@property (nonatomic, strong) NSString *clearArt;
-@property (nonatomic, strong) NSString *clearLogo;
-
-@property (nonatomic, strong) UIImage *coverArt;
-@property (nonatomic, strong) UIImage *thumbnail;
-
-@property (nonatomic) BOOL isLiveStream;
-@property (nonatomic) NSTimeInterval position;
-@property (nonatomic) NSTimeInterval duration;
-
-- (void)applyTo:(MPNowPlayingInfoCenter *)nowPlayingCenter;
-
-@end
 
 @implementation NowPlayingItem
 
@@ -142,8 +97,7 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)applyTo:(MPNowPlayingInfoCenter *)nowPlayingCenter {
-    
+- (NSDictionary *)nowPlayingInfoDictionary {
     NSMutableDictionary *nowPlayingInfo = [NSMutableDictionary dictionary];
     nowPlayingInfo[MPMediaItemPropertyArtist] = _artist;
     nowPlayingInfo[MPMediaItemPropertyTitle] = _title;
@@ -151,8 +105,7 @@ typedef enum : NSUInteger {
         return _coverArt;
     }];
     nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = [NSNumber numberWithBool:_isLiveStream];
-    
-    nowPlayingCenter.nowPlayingInfo = nowPlayingInfo;
+    return nowPlayingInfo;
 }
 
 - (NSString*)getNowPlayingThumbnailPath:(NSDictionary*)item {
@@ -161,30 +114,6 @@ typedef enum : NSUInteger {
     return [Utilities getThumbnailFromDictionary:item useBanner:NO useIcon:useIcon];
 }
 
-
-@end
-
-@interface PlayerInfo : NSObject
-
-@property (nonatomic) CGFloat percentage;
-@property (nonatomic) CGFloat time;
-@property (nonatomic) CGFloat totalTime;
-@property (nonatomic) BOOL partyMode;
-@property (nonatomic) NSInteger playlistPosition;
-@property (nonatomic) BOOL canRepeat;
-@property (nonatomic) BOOL canShuffle;
-@property (nonatomic) BOOL repeat;
-@property (nonatomic) BOOL shuffled;
-@property (nonatomic) BOOL canSeek;
-@property (nonatomic) RepeatType repeatType;
-
-@property (nonatomic) CGFloat duration;
-@property (nonatomic) CGFloat posSeconds;
-@property (nonatomic, strong) NSString *globalTime;
-@property (nonatomic, strong) NSString *actualTime;
-
-- (void)updateWith:(NSDictionary *)playerInfo;
-- (void)applyTo:(MPNowPlayingInfoCenter *)nowPlayingCenter;
 
 @end
 
@@ -240,32 +169,79 @@ typedef enum : NSUInteger {
     }
     // Detect start of new song to update party mode playlist
     _posSeconds = ((hours * 60) + minutes) * 60 + seconds;
+    
+    _speed = [playerInfo[@"speed"] floatValue];
 }
 
-- (void)applyTo:(MPNowPlayingInfoCenter *)nowPlayingCenter {
-    
-    NSMutableDictionary *nowPlayingInfo = [nowPlayingCenter.nowPlayingInfo mutableCopy];
+- (NSDictionary *)nowPlayingInfoDictionary {
+    NSMutableDictionary *nowPlayingInfo = [NSMutableDictionary dictionary];
     nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = [NSNumber numberWithFloat:_duration];
+    nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = [NSNumber numberWithInt:_posSeconds];
+    nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = [NSNumber numberWithInt:_speed];
 //    nowPlayingInfo[MPMediaItemPropertyArtwork] = [[MPMediaItemArtwork alloc] initWithBoundsSize:_coverArt.size requestHandler:^UIImage * _Nonnull(CGSize size) {
 //        return _coverArt;
 //    }];
 //    nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = [NSNumber numberWithBool:_isLiveStream];
-    
-    nowPlayingCenter.nowPlayingInfo = nowPlayingInfo;
+
+    return nowPlayingInfo;
 }
 
 @end
 
 @implementation NowPlayingManager
 
++ (id)sharedManager {
+    static dispatch_once_t once;
+    static id instance;
+    dispatch_once(&once, ^{
+        instance = [self new];
+    });
+    return instance;
+}
+
+- (void)register {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onServerConnected:) name:@"XBMCServerConnectionSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onServerDisconnected:) name:@"XBMCServerConnectionFailed" object:nil];
+}
+
+- (void)onServerConnected:(NSNotification *)notification {
+    [self startTimer];
+}
+
+- (void)onServerDisconnected:(NSNotification *)notification {
+    [self stopTimer];
+}
+
+- (void)startTimer {
+    [self stopTimer];
+    _isEnabled = true;
+
+    _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(refresh) userInfo:nil repeats:YES];
+}
+
+- (void)stopTimer {
+    _isEnabled = false;
+    [_refreshTimer invalidate];
+}
+
 - (void)updateNowPlayingItem:(NowPlayingItem *)item {
     self.nowPlayingItem = item;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingItemUpdated" object:_nowPlayingItem];
+    if (_nowPlayingItem && _playerInfo) {
+        NSMutableDictionary *infoDict = [[_nowPlayingItem nowPlayingInfoDictionary] mutableCopy];
+        [infoDict addEntriesFromDictionary:[_playerInfo nowPlayingInfoDictionary]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingUpdated" object:infoDict];
+    }
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingItemUpdated" object:_nowPlayingItem];
 }
 
 - (void)updatePlayerInfo:(PlayerInfo *)playerInfo {
     self.playerInfo = playerInfo;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingPlayerInfoUpdated" object:_playerInfo];
+    if (_nowPlayingItem && _playerInfo) {
+        NSMutableDictionary *infoDict = [[_nowPlayingItem nowPlayingInfoDictionary] mutableCopy];
+        [infoDict addEntriesFromDictionary:[_playerInfo nowPlayingInfoDictionary]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingUpdated" object:infoDict];
+    }
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingPlayerInfoUpdated" object:_playerInfo];
 }
 
 - (void)refresh {
@@ -276,9 +252,9 @@ typedef enum : NSUInteger {
         }
         BOOL nothingIsPlaying = false;
         int currentPlayerID = 0;
-        int lastPlayerID = 0;
-        int selectedPlayerID = 0;
-        
+
+        _playerInfo = nil;
+        _nowPlayingItem = nil;
         if (error == nil && methodError == nil) {
             if ([methodResult isKindOfClass:[NSArray class]] && [methodResult count] > 0) {
                 nothingIsPlaying = NO;
@@ -311,8 +287,6 @@ typedef enum : NSUInteger {
                     if (!self.isEnabled) {
                         return;
                     }
-                    long storedItemID = 0;
-                    NSString *storeLiveTVTitle = @"";
                     
                     if (error == nil && methodError == nil) {
                         if ([methodResult isKindOfClass:[NSDictionary class]]) {
@@ -349,6 +323,7 @@ typedef enum : NSUInteger {
                                                    @"canrepeat",
                                                    @"canshuffle",
                                                    @"repeat",
+                                                   @"speed",
                                                    @"shuffled",
                                                    @"canseek"]}
                  onCompletion:^(NSString *methodName, NSInteger callId, id methodResult, DSJSONRPCError *methodError, NSError *error) {
@@ -361,9 +336,12 @@ typedef enum : NSUInteger {
                             if ([methodResult count]) {
                                 PlayerInfo *info = [[PlayerInfo alloc] init];
                                 [info updateWith:methodResult];
+                                [self updatePlayerInfo:info];
+                                return;
                             }
                         }
                     }
+                    [self nothingIsPlaying];
                 }];
             }
             else {
@@ -378,7 +356,8 @@ typedef enum : NSUInteger {
 }
 
 - (void)nothingIsPlaying {
-    
+    [self updateNowPlayingItem:nil];
+    [self updatePlayerInfo:nil];
 }
 
 @end

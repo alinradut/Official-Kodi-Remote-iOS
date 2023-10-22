@@ -52,14 +52,6 @@
     return self;
 }
 
-- (void)wrap:(void (^)(void))block {
-    if (!_player.isPlaying) {
-        [_player play];
-    }
-    block();
-//    [_player stop];
-}
-
 - (void)onNowPlayingUpdatedNotification:(NSNotification *)notification {
     if (notification.object != nil && [notification.object isKindOfClass:[NSDictionary class]]) {
         NSDictionary *nowPlayingInfo = notification.object;
@@ -74,6 +66,10 @@
             }
         }
         [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:nowPlayingInfo];
+    }
+    else {
+        [_player stop];
+        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:nil];
     }
 }
 

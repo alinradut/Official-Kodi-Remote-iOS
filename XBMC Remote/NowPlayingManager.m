@@ -360,6 +360,7 @@
 - (void)nothingIsPlaying {
     [self updateNowPlayingItem:nil];
     [self updatePlayerInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingUpdated" object:nil];
 }
 
 @end

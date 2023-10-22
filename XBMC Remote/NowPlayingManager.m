@@ -8,12 +8,25 @@
 
 #import "NowPlayingManager.h"
 #import "SDImageCache.h"
+#import "SDWebImagePrefetcher.h"
 #import "Utilities.h"
 #import "AppDelegate.h"
 #define ID_INVALID -2
 
-
 @implementation NowPlayingItem
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        SDWebImageDownloader *manager = [SDWebImagePrefetcher sharedImagePrefetcher].manager.imageDownloader;
+        NSDictionary *httpHeaders = AppDelegate.instance.getServerHTTPHeaders;
+        if (httpHeaders[@"Authorization"] != nil) {
+            [manager setValue:httpHeaders[@"Authorization"] forHTTPHeaderField:@"Authorization"];
+        }
+    }
+    return self;
+}
 
 - (void)updateWith:(NSDictionary *)nowPlayingInfo playerID:(int)playerID {
     
@@ -64,7 +77,7 @@
         _fanart = nowPlayingInfo[@"fanart"] == [NSNull null] ? @"" : nowPlayingInfo[@"fanart"];
     }
     if ([_thumbnailPath isEqualToString:@""]) {
-        UIImage *image = [UIImage imageNamed:@"coverbox_back"];
+//        UIImage *image = [UIImage imageNamed:@"coverbox_back"];
 //        [self processLoadedThumbImage:self thumb:thumbnailView image:image enableJewel:enableJewel];
     }
     else {
@@ -75,13 +88,7 @@
             }
             else {
                 // download the image
-//                [thumbnailView sd_setImageWithURL:[NSURL URLWithString:stringURL]
-//                                 placeholderImage:[UIImage imageNamed:@"coverbox_back"]
-//                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-//                    if (error == nil) {
-//                        [sf processLoadedThumbImage:sf thumb:thumb image:image enableJewel:enableJewel];
-//                    }
-//                }];
+                [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:@[[NSURL URLWithString:stringURL]]];
             }
         }];
     }

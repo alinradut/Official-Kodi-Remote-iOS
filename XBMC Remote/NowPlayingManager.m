@@ -101,9 +101,11 @@
     NSMutableDictionary *nowPlayingInfo = [NSMutableDictionary dictionary];
     nowPlayingInfo[MPMediaItemPropertyArtist] = _artist;
     nowPlayingInfo[MPMediaItemPropertyTitle] = _title;
-    nowPlayingInfo[MPMediaItemPropertyArtwork] = [[MPMediaItemArtwork alloc] initWithBoundsSize:_coverArt.size requestHandler:^UIImage * _Nonnull(CGSize size) {
-        return _coverArt;
-    }];
+    if (_thumbnail) {
+        nowPlayingInfo[MPMediaItemPropertyArtwork] = [[MPMediaItemArtwork alloc] initWithBoundsSize:_thumbnail.size requestHandler:^UIImage * _Nonnull(CGSize size) {
+            return _thumbnail;
+        }];
+    }
     nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = [NSNumber numberWithBool:_isLiveStream];
     return nowPlayingInfo;
 }

@@ -101,12 +101,12 @@
     NSMutableDictionary *nowPlayingInfo = [NSMutableDictionary dictionary];
     nowPlayingInfo[MPMediaItemPropertyArtist] = _artist;
     nowPlayingInfo[MPMediaItemPropertyTitle] = _title;
+    nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = [NSNumber numberWithBool:_isLiveStream];
     if (_thumbnail) {
         nowPlayingInfo[MPMediaItemPropertyArtwork] = [[MPMediaItemArtwork alloc] initWithBoundsSize:_thumbnail.size requestHandler:^UIImage * _Nonnull(CGSize size) {
             return _thumbnail;
         }];
     }
-    nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = [NSNumber numberWithBool:_isLiveStream];
     return nowPlayingInfo;
 }
 
@@ -180,10 +180,6 @@
     nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = [NSNumber numberWithFloat:_duration];
     nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = [NSNumber numberWithInt:_posSeconds];
     nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = [NSNumber numberWithInt:_speed];
-//    nowPlayingInfo[MPMediaItemPropertyArtwork] = [[MPMediaItemArtwork alloc] initWithBoundsSize:_coverArt.size requestHandler:^UIImage * _Nonnull(CGSize size) {
-//        return _coverArt;
-//    }];
-//    nowPlayingInfo[MPNowPlayingInfoPropertyIsLiveStream] = [NSNumber numberWithBool:_isLiveStream];
 
     return nowPlayingInfo;
 }
@@ -226,24 +222,37 @@
     [_refreshTimer invalidate];
 }
 
-- (void)updateNowPlayingItem:(NowPlayingItem *)item {
-    self.nowPlayingItem = item;
-    if (_nowPlayingItem && _playerInfo) {
-        NSMutableDictionary *infoDict = [[_nowPlayingItem nowPlayingInfoDictionary] mutableCopy];
-        [infoDict addEntriesFromDictionary:[_playerInfo nowPlayingInfoDictionary]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingUpdated" object:infoDict];
+- (void)update {
+    if (_incomingNowPlayingItem && _incomingPlayerInfo) {
+        self.nowPlayingItem = _incomingNowPlayingItem;
+        self.playerInfo = _incomingPlayerInfo;
+        
+        _incomingNowPlayingItem = nil;
+        _incomingPlayerInfo = nil;
+        
+        NSDictionary *userInfo = @{
+            @"nowPlayingItem": _nowPlayingItem,
+            @"playerInfo": _playerInfo
+        };
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingUpdated" object:nil userInfo:userInfo];
     }
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingItemUpdated" object:_nowPlayingItem];
+}
+
+- (void)updateNowPlayingItem:(NowPlayingItem *)item {
+    _incomingNowPlayingItem = item;
+    [self update];
+    if (!item) {
+        _nowPlayingItem = nil;
+    }
 }
 
 - (void)updatePlayerInfo:(PlayerInfo *)playerInfo {
-    self.playerInfo = playerInfo;
-    if (_nowPlayingItem && _playerInfo) {
-        NSMutableDictionary *infoDict = [[_nowPlayingItem nowPlayingInfoDictionary] mutableCopy];
-        [infoDict addEntriesFromDictionary:[_playerInfo nowPlayingInfoDictionary]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingUpdated" object:infoDict];
+    _incomingPlayerInfo = playerInfo;
+    [self update];
+    if (!playerInfo) {
+        _playerInfo = nil;
     }
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"NowPlayingPlayerInfoUpdated" object:_playerInfo];
 }
 
 - (void)refresh {
@@ -255,8 +264,6 @@
         BOOL nothingIsPlaying = false;
         int currentPlayerID = 0;
 
-        _playerInfo = nil;
-        _nowPlayingItem = nil;
         if (error == nil && methodError == nil) {
             if ([methodResult isKindOfClass:[NSArray class]] && [methodResult count] > 0) {
                 nothingIsPlaying = NO;

@@ -52,6 +52,8 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSTimeInterval position;
 @property (nonatomic) NSTimeInterval duration;
 
+- (NSDictionary *)nowPlayingInfoDictionary;
+
 @end
 
 @interface PlayerInfo : NSObject
@@ -74,18 +76,22 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString *globalTime;
 @property (nonatomic, strong) NSString *actualTime;
 
+- (NSDictionary *)nowPlayingInfoDictionary;
+
 @end
 
 
 @interface NowPlayingManager : NSObject {
     NSTimer *_refreshTimer;
+    NowPlayingItem *_incomingNowPlayingItem;
+    PlayerInfo *_incomingPlayerInfo;
 }
 
 @property (nonatomic) BOOL isEnabled;
-@property (nonatomic, strong) NowPlayingItem *nowPlayingItem;
-@property (nonatomic, strong) PlayerInfo *playerInfo;
+@property (nonatomic, strong) NowPlayingItem * _Nullable nowPlayingItem;
+@property (nonatomic, strong) PlayerInfo * _Nullable playerInfo;
 
-+ (id)sharedManager;
++ (NowPlayingManager *)sharedManager;
 - (void)register;
 
 @end

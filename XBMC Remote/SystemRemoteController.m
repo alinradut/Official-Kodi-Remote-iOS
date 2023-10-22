@@ -53,18 +53,23 @@
 }
 
 - (void)onNowPlayingUpdatedNotification:(NSNotification *)notification {
-    if (notification.object != nil && [notification.object isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *nowPlayingInfo = notification.object;
-
-        NSNumber *playbackRate = nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate];
-        if (playbackRate) {
-            if (playbackRate.floatValue > 0.0) {
-                [_player play];
-            }
-            else {
-                [_player pause];
-            }
+    if (notification.userInfo != nil
+        && [notification.userInfo[@"nowPlayingItem"] isKindOfClass: [NowPlayingItem class]]
+        && [notification.userInfo[@"playerInfo"] isKindOfClass: [PlayerInfo class]]) {
+        
+        NowPlayingItem *item = notification.userInfo[@"nowPlayingItem"];
+        PlayerInfo *playerInfo = notification.userInfo[@"playerInfo"];
+        
+        if (playerInfo.speed > 0.0) {
+            [_player play];
         }
+        else {
+            [_player pause];
+        }
+        
+        NSMutableDictionary *nowPlayingInfo = [item.nowPlayingInfoDictionary mutableCopy];
+        [nowPlayingInfo addEntriesFromDictionary:playerInfo.nowPlayingInfoDictionary];
+        
         [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:nowPlayingInfo];
     }
     else {
@@ -128,8 +133,17 @@
     return MPRemoteCommandHandlerStatusSuccess;
 }
 
-- (MPRemoteCommandHandlerStatus) onChangePlaybackPositionCommand: (MPRemoteCommandEvent*) event {
-    return MPRemoteCommandHandlerStatusSuccess;
+- (MPRemoteCommandHandlerStatus) onChangePlaybackPositionCommand: (MPChangePlaybackPositionCommandEvent*) event {
+    PlayerInfo *playerInfo = [NowPlayingManager sharedManager].playerInfo;
+    NowPlayingItem *item = [NowPlayingManager sharedManager].nowPlayingItem;
+    if (playerInfo.duration && item) {
+        NSTimeInterval percentage = (event.positionTime / playerInfo.duration) * 100;
+        [[Utilities getJsonRPC] callMethod:@"Player.Seek" withParameters:[Utilities buildPlayerSeekPercentageParams:item.playerID percentage:percentage]];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }
+    else {
+        return MPRemoteCommandHandlerStatusCommandFailed;
+    }
 }
 
 - (void)handleAction:(int)actionX {

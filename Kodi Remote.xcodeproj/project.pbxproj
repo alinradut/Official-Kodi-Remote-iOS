@@ -89,7 +89,7 @@
 		1A6742E9168479FD00E8D5AF /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A6742E8168479FC00E8D5AF /* MasterViewController.xib */; };
 		1A9786C01683D87800B4F3F8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A9786C21683D87800B4F3F8 /* Localizable.strings */; };
 		3B42B34F2AE46A79000ED51F /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3B42B34E2AE46A78000ED51F /* silence.mp3 */; };
-		3B75E88A2ADADFCE006AC54E /* SystemRemoteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */; };
+		3B75E88A2ADADFCE006AC54E /* MediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E8892ADADFCE006AC54E /* MediaPlayerController.m */; };
 		3B75E88D2ADBCE95006AC54E /* NowPlayingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */; };
 		3B75E88F2ADF1314006AC54E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B75E88E2ADF1314006AC54E /* MediaPlayer.framework */; };
 		C703692927148CEF0049F9BF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C703692827148CEF0049F9BF /* StoreKit.framework */; };
@@ -273,8 +273,8 @@
 		1A9786C11683D87800B4F3F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1A9786C31683D8E900B4F3F8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3B42B34E2AE46A78000ED51F /* silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = silence.mp3; sourceTree = "<group>"; };
-		3B75E8882ADADFCE006AC54E /* SystemRemoteController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemRemoteController.h; sourceTree = "<group>"; };
-		3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemRemoteController.m; sourceTree = "<group>"; };
+		3B75E8882ADADFCE006AC54E /* MediaPlayerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerController.h; sourceTree = "<group>"; };
+		3B75E8892ADADFCE006AC54E /* MediaPlayerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerController.m; sourceTree = "<group>"; };
 		3B75E88B2ADBCE95006AC54E /* NowPlayingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NowPlayingManager.h; sourceTree = "<group>"; };
 		3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NowPlayingManager.m; sourceTree = "<group>"; };
 		3B75E88E2ADF1314006AC54E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -565,8 +565,8 @@
 				0F4019B218F415A50064E4DC /* MessagesView.m */,
 				0F4AB8181903DDCE005DEC5C /* RemoteControllerGestureZoneView.h */,
 				0F4AB8191903DDCE005DEC5C /* RemoteControllerGestureZoneView.m */,
-				3B75E8882ADADFCE006AC54E /* SystemRemoteController.h */,
-				3B75E8892ADADFCE006AC54E /* SystemRemoteController.m */,
+				3B75E8882ADADFCE006AC54E /* MediaPlayerController.h */,
+				3B75E8892ADADFCE006AC54E /* MediaPlayerController.m */,
 				3B75E88B2ADBCE95006AC54E /* NowPlayingManager.h */,
 				3B75E88C2ADBCE95006AC54E /* NowPlayingManager.m */,
 				0F747736151DD98600EF78AD /* classes */,
@@ -875,7 +875,7 @@
 				0F7F3DA5164A6D730080A14A /* ECSlidingViewController.m in Sources */,
 				0F7F3DA6164A6D730080A14A /* UIImage+ImageWithUIView.m in Sources */,
 				0F7F3DAB164AAD0F0080A14A /* InitialSlidingViewController.m in Sources */,
-				3B75E88A2ADADFCE006AC54E /* SystemRemoteController.m in Sources */,
+				3B75E88A2ADADFCE006AC54E /* MediaPlayerController.m in Sources */,
 				0F40F5A7164D5FA000AF9DE9 /* RightMenuViewController.m in Sources */,
 				0FA39CBD165419F400A61E4A /* gradientUIView.m in Sources */,
 				0FB133AA165EC1E5003756C1 /* tcpJSONRPC.m in Sources */,

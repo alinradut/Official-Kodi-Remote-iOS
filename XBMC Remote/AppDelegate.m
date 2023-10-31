@@ -15,7 +15,7 @@
 #import "UIImageView+WebCache.h"
 #import "Utilities.h"
 #import "NowPlayingManager.h"
-#import "SystemRemoteController.h"
+#import "MediaPlayerController.h"
 
 #include <arpa/inet.h>
 #include <net/if.h>
@@ -6262,8 +6262,8 @@
         self.window.rootViewController = self.windowController;
     }
     
-    [[NowPlayingManager sharedManager] register];
-    [[SystemRemoteController sharedManager] setup];
+    [[NowPlayingManager sharedManager] setup];
+    [[MediaPlayerController sharedManager] setup];
     
     return YES;
 }

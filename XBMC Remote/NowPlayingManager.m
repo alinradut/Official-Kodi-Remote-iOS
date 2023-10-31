@@ -204,7 +204,7 @@
     return instance;
 }
 
-- (void)register {
+- (void)setup {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onServerConnected:) name:@"XBMCServerConnectionSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onServerDisconnected:) name:@"XBMCServerConnectionFailed" object:nil];
 }
@@ -316,16 +316,12 @@
                         }
                         else {
                             // not playing anything
-//                            storedItemID = SELECTED_NONE;
-//                            lastThumbnail = @"";
-//                            [self setCoverSize:@"song"];
-//                            UIImage *image = [UIImage imageNamed:@"coverbox_back"];
-//                            [self processLoadedThumbImage:self thumb:thumbnailView image:image enableJewel:enableJewel];
+                            [self nothingIsPlaying];
                         }
                     }
                     else {
                         // not playing anything
-//                        storedItemID = SELECTED_NONE;
+                        [self nothingIsPlaying];
                     }
                 }];
                 [[Utilities getJsonRPC]

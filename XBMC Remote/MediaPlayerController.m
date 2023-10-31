@@ -1,12 +1,12 @@
 //
-//  SystemRemoteController.m
+//  MediaPlayerController.m
 //  Kodi Remote
 //
 //  Created by Alin Radut on 2023-10-14.
 //  Copyright © 2023 Team Kodi. All rights reserved.
 //
 
-#import "SystemRemoteController.h"
+#import "MediaPlayerController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "Utilities.h"
 #import "AppDelegate.h"
@@ -21,13 +21,13 @@
 
 @class NowPlayingItem;
 
-@interface SystemRemoteController ()
+@interface MediaPlayerController ()
 
 @property (nonatomic, strong) AVAudioPlayer *player;
 
 @end
 
-@implementation SystemRemoteController
+@implementation MediaPlayerController
 
 + (id)sharedManager {
     static dispatch_once_t once;

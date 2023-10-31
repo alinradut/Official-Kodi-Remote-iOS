@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SystemRemoteController : NSObject
+@interface MediaPlayerController : NSObject
 
 @property (nonatomic) BOOL isEnabled;
 

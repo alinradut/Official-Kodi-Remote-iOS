@@ -92,7 +92,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) PlayerInfo * _Nullable playerInfo;
 
 + (NowPlayingManager *)sharedManager;
-- (void)register;
+- (void)setup;
 
 @end
 
